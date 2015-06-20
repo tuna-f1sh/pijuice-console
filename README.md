@@ -1,0 +1,73 @@
+# PiJuice Input Board Python HID Emulator
+
+The Python scripts within this repository can be used with the ADS1015 and PiJuice input
+board to emulate a keyboard, mouse or joystick input device. The devices work
+with AdvMame, PiPlay and X Window (`startx`). I haven't had success with
+Mame4All (my USB keyboard doesn't work either though...).
+
+# Dependancies
+
+The scripts use the following (install in this order):
+
+* python-smbus - `sudo apt-get install python-smbus`.
+* libudev - `sudo apt-get install libudev-dev`.
+* python-uinput - `sudo pip install python-uinput` (`apt-get install
+  python-pip` if you don't have 'pip').
+* I2C must be enabled - using `raspi-config` or add 'i2c-bcm2708' to
+  '/etc/modules'.
+
+# Install/Run
+
+```
+# Clone folder
+git clone *REPO LINK*
+# Change to directory
+cd pijuice-input
+# Load uinput module
+modprobe uinput
+# Run the script as a background task (& at end)
+sudo python digitalJoy.py &
+```
+
+If all the above dependancies exist the script should now be running in the
+background. Start whatever software you want to control. For example, to run X
+Window desktop with the joystick as a mouse (stop any existing instances using
+`fg` to bring the task into the foreground then pressing 'Ctrl-C'):
+
+```
+sudo python mouseJoy.py &
+startx
+```
+
+Remember to stop any instances of the task using `fg` followed by 'Ctrl-C',
+before starting another.
+
+## Run at Boot
+
+Once you've got the script running and mapping correct, you can set it to run
+at boot by editing `/etc/rc.local`:
+
+```
+sudo nano /etc/rc.local
+# Add this before 'exit 0'
+python /home/pi/pijuice-input/digitalJoy.py & # or whereever/whatever script
+```
+
+# Mapping
+
+If you want to change the button mapping, open the script (`nano digitalJoy.py`)
+navigate to the 'buttons' **dictionary**. The **key** (LH) is the BCM GPIO pin
+and the **value** (RH) is the key to emulate upon press event. For example, to
+map 17 to spacebar:
+
+```python
+17: uinput.KEY_SPACE
+```
+
+# Credits
+
+Developed by John Whittington -
+[@j_whittington](http://www.twitter.com/j_whittington) - [JBR
+Engineering](http://www.jbrengineering.co.uk)
+
+Uses [Adafruit ADS1X15 Library](https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code) and [python-uinput](https://github.com/tuomasjjrasanen/python-uinput)
