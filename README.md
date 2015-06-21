@@ -13,7 +13,7 @@ The scripts use the following (install in this order):
 * libudev - `sudo apt-get install libudev-dev`.
 * python-uinput - `sudo pip install python-uinput` (`apt-get install
   python-pip` if you don't have 'pip').
-* I2C must be enabled - using `raspi-config` or add 'i2c-bcm2708' to
+* I2C must be enabled - using `raspi-config` or add 'i2c_bcm2708', 'i2c_dev' to
   '/etc/modules'.
 
 # Install/Run
@@ -50,8 +50,11 @@ at boot by editing `/etc/rc.local`:
 ```
 sudo nano /etc/rc.local
 # Add this before 'exit 0'
-python /home/pi/pijuice-input/digitalJoy.py & # or whereever/whatever script
+python /home/pi/pijuice-console/digitalJoy.py & # or whereever/whatever script
 ```
+
+You also need to load the uinput module at boot by adding 'uinput' to
+'/etc/modules' (`sudo nano /etc/modules/`).
 
 # Mapping
 
@@ -63,6 +66,12 @@ map 17 to spacebar:
 ```python
 17: uinput.KEY_SPACE
 ```
+
+# Troubleshooting
+
+* If 'Cannot find I2C device...', the I2C module has not loaded correctly. Try
+  `sudo rmmod i2c-bcm2708;sudo modprobe i2c-bcm2708`.
+* GPIO 16 is the SD LED. I can be used but you might get a warning.
 
 # Credits
 

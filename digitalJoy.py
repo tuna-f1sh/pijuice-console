@@ -7,17 +7,22 @@ from Adafruit_ADS1x15 import ADS1x15
 
 # BCM GPIO PIN : ASCII KEYBOARD MAPPING (25 used by PiTFT)
 # You can change the BCM GPIO map and corresponding key press event here
+# Console: #13 BTN1, #16 BTN2, #19 BTN3, #20 BTN4, #21 BTN5
 buttons = {
-        17 : uinput.KEY_5,
-        27 : uinput.KEY_1,
-        23 : uinput.KEY_LEFTCTRL,
-        24 : uinput.KEY_SPACE,
-        18 : uinput.BTN_JOYSTICK
+        19 : uinput.KEY_R,
+        16 : uinput.KEY_Q,
+        20 : uinput.KEY_X,
+        21 : uinput.KEY_LEFTCTRL,
+        13 : uinput.KEY_Z,
+        17 : uinput.KEY_R,
+        22 : uinput.KEY_ESC,
+        23 : uinput.KEY_5,
+        27 : uinput.KEY_1
         }
 
 # Joystick AXIS mapping to ADC channels
-Y_AXIS = 1
-X_AXIS = 0
+Y_AXIS = 0
+X_AXIS = 1
 
 # Hardware settings
 ADS1015 = 0x00  # 12-bit ADC
@@ -40,6 +45,7 @@ sps = 250
 events = [uinput.KEY_UP, uinput.KEY_DOWN, uinput.KEY_LEFT, uinput.KEY_RIGHT]
 
 # Initialise GPIO and button events
+GPIO.setwarnings(False) # #16 is SD LED but we can still use it
 GPIO.setmode(GPIO.BCM)
 for x in buttons:
     GPIO.setup(x, GPIO.IN, pull_up_down=GPIO.PUD_UP) # pull-up so button connects to ground
