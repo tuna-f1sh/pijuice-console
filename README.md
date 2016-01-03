@@ -20,11 +20,11 @@ The scripts use the following (install in this order):
 
 ```
 # Clone folder
-git clone *REPO LINK*
+git clone https://github.com/tuna-f1sh/pijuice-console
 # Change to directory
-cd pijuice-input
+cd pijuice-console
 # Load uinput module
-modprobe uinput
+sudo modprobe uinput
 # Run the script as a background task (& at end)
 sudo python digitalJoy.py &
 ```
@@ -72,6 +72,7 @@ map 17 to spacebar:
 * If 'Cannot find I2C device...', the I2C module has not loaded correctly. Try
   `sudo rmmod i2c-bcm2708;sudo modprobe i2c-bcm2708`.
 * GPIO 16 is the SD LED. I can be used but you might get a warning.
+* 'Error accessing 0x48...' - ensure that the console PCB is connected to the correct pins SDA/SDC.
 
 # Credits
 
