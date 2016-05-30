@@ -15,10 +15,12 @@ The scripts use the following (install in this order):
   python-pip` if you don't have 'pip').
 * I2C must be enabled - using `raspi-config` or add 'i2c_bcm2708', 'i2c_dev' to
   '/etc/modules'.
+* *rpi\_ws281x - if you want neopixels `sudo pip install rpi_ws2812x`.*
 
 # Install/Run
 
 ```
+# Install dependancies - see above
 # Clone folder
 git clone https://github.com/tuna-f1sh/pijuice-console
 # Change to directory
@@ -27,6 +29,8 @@ cd pijuice-console
 sudo modprobe uinput
 # Run the script as a background task (& at end)
 sudo python digitalJoy.py &
+# For a Neopixel demo, which flashes the pixels on each button press
+sudo python neopixelJoy.py &
 ```
 
 If all the above dependancies exist the script should now be running in the

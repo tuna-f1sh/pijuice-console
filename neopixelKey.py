@@ -25,6 +25,14 @@ buttons = {
 	0  : uinput.KEY_6,
 }
 
+# LED strip configuration:
+LED_COUNT      = 2      # Number of LED pixels.
+LED_PIN        = 18      # GPIO pin connected to the pixels (must support PWM!).
+LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
+LED_DMA        = 5       # DMA channel to use for generating signal (try 5)
+LED_BRIGHTNESS = 128     # Set to 0 for darkest and 255 for brightest
+LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
+
 # Joystick AXIS mapping to ADC channels
 Y_AXIS = 0
 X_AXIS = 1
@@ -52,6 +60,10 @@ events = [uinput.KEY_UP, uinput.KEY_DOWN, uinput.KEY_LEFT, uinput.KEY_RIGHT]
 # Initialise GPIO and button events
 GPIO.setwarnings(False) # #16 is SD LED but we can still use it
 GPIO.setmode(GPIO.BCM)
+
+# Initialise Neopixels
+strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS)
+strip.begin()
 
 for x in buttons:
     GPIO.setup(x, GPIO.IN, pull_up_down=GPIO.PUD_UP) # pull-up so button connects to ground
@@ -91,6 +103,10 @@ def setState(state, button, key):
         device.emit(key, 1)
         #print key
         #print button
+	# Flash pixels
+	strip.setPixelColor(0,Color(255,255,255))
+	strip.setPixelColor(1,Color(255,255,255))
+	strip.show()
     if state and GPIO.input(button):
         state = False
         device.emit(key, 0)
@@ -124,3 +140,6 @@ while True:
         joystate[x] = setStateJoy(joystate[x], extstate[x], key)
 
     time.sleep(.02)
+    strip.setPixelColor(0,0)
+    strip.setPixelColor(1,0)
+    strip.show()
