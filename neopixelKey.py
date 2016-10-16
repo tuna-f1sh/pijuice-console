@@ -42,6 +42,17 @@ ADS1015 = 0x00  # 12-bit ADC
 DZONE = 500 # dead zone applied to joystick (mV)
 VREF = 3300 # joystick Vcc (mV)
 
+def wheel(pos):
+    """Generate rainbow colors across 0-255 positions."""
+    if pos < 85:
+        return Color(pos * 3, 255 - pos * 3, 0)
+    elif pos < 170:
+        pos -= 85
+        return Color(255 - pos * 3, 0, pos * 3)
+    else:
+        pos -= 170
+        return Color(0, pos * 3, 255 - pos * 3)
+
 # ---- OPTIONS END ----
 #=======================
 
@@ -84,8 +95,11 @@ def ReadChannel(channel):
 # Converts ADC reading to digital button states
 def digitalJoy(axis, direction):
     value = ReadChannel(axis)
+    strip.show()
     if direction:
         if (value > (VREF/2 + DZONE)):
+            strip.setPixelColor(0,wheel(int(round(value * (255/VREF)))))
+            strip.setPixelColor(1,wheel(int(round(value * (255/VREF)))))
             return 1
         else:
             return 0

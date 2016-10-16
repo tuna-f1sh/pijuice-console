@@ -15,7 +15,7 @@ The scripts use the following (install in this order):
   python-pip` if you don't have 'pip').
 * I2C must be enabled - using `raspi-config` or add 'i2c_bcm2708', 'i2c_dev' to
   '/etc/modules'.
-* *rpi\_ws281x - if you want neopixels `sudo pip install rpi_ws2812x`.*
+* *rpi\_ws281x - if you want neopixels `sudo pip install rpi_ws281x`.*
 
 # Install/Run
 
